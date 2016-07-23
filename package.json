@@ -1,0 +1,44 @@
+{
+  "name": "tdd-react-enzyme-article",
+  "version": "1.0.0",
+  "description": "A repo for the `A TDD approach on testing React components using Enzyme` I wrote",
+  "scripts": {
+    "test": "mocha setup.js tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/r31gN/tdd-react-enzyme-article.git"
+  },
+  "author": {
+    "name": "r31gN_",
+    "email": "the.reignn@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/r31gN/tdd-react-enzyme-article/issues"
+  },
+  "homepage": "https://github.com/r31gN/tdd-react-enzyme-article",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-register": "^6.9.0",
+    "chai": "^3.5.0",
+    "enzyme": "^2.3.0",
+    "jsdom": "^9.3.0",
+    "mocha": "^2.5.3",
+    "nock": "^8.0.0",
+    "react-addons-test-utils": "^15.0.2",
+    "sinon": "^1.17.4"
+  },
+  "dependencies": {
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2",
+    "superagent": "^2.0.0"
+  },
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "r31gN_",
+      "email": "the.reignn@gmail.com"
+    }
+  ]
+}
