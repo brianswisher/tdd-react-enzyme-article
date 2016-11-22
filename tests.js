@@ -169,44 +169,35 @@ describe('Test suite for UsersListComponent', () => {
   })
 
   it('Correctly updates the state after AJAX call in `componentDidMount` was made', (done) => {
+    const componentDidMount = UsersListComponent.prototype.componentDidMount
+
+    sinon.spy(UsersListComponent.prototype, 'componentDidMount')
+
     nock('https://api.github.com')
       .get('/users')
       .reply(200, [
         { 'name': 'Reign', 'age': 26 }
       ])
 
-    const oComponentDidMount = UsersListComponent.componentDidMount
-
-    UsersListComponent.componentDidMount = function () {
-      oComponentDidMount.apply(UsersListComponent)
-
-      console.info({
-        dump: 1234
-      })
-
-      // expect(wrapper.state().usersList).to.be.instanceof(Array)
-      // expect(wrapper.state().usersList.length).to.equal(1)
-      // expect(wrapper.state().usersList[0].name).to.equal('Reign')
-      // expect(wrapper.state().usersList[0].age).to.equal(26)
-      // nock.cleanAll()
-      // done()
-
-      // UsersListComponent.componentDidMount = oComponentDidMount
-    }
-
     // Overwrite, so we can correctly reason about the count number
     // Don't want shared state
     wrapper = mount(<UsersListComponent />)
 
+    expect(UsersListComponent.prototype.componentDidMount.calledOnce).to.equal(true)
 
-    // trying to avoid setTimeout
-    setTimeout(function() {
+    UsersListComponent.prototype.componentDidMount = componentDidMount
+
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve()
+      }, 1500)
+    }).then(() => {
       expect(wrapper.state().usersList).to.be.instanceof(Array)
       expect(wrapper.state().usersList.length).to.equal(1)
       expect(wrapper.state().usersList[0].name).to.equal('Reign')
       expect(wrapper.state().usersList[0].age).to.equal(26)
       nock.cleanAll()
       done()
-    }, 1500)
+    })
   })
 })
