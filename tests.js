@@ -5,6 +5,22 @@ import request from 'superagent'
 import { expect } from 'chai'
 import { shallow, mount, render } from 'enzyme'
 
+function fetchGithubUsers() {
+  return new Promise((resolve, reject) => {
+    request
+      .get('https://api.github.com/users')
+      .end((err, res) => {
+        if (err) {
+          reject(err)
+
+          return
+        }
+
+        resolve(res)
+      })
+  })
+}
+
 const UserComponent = (props) => {
   return (
     <div className="user">
@@ -24,18 +40,9 @@ class UsersListComponent extends React.Component {
   }
 
   componentDidMount() {
-    request
-      .get('https://api.github.com/users')
-      .end((err, res) => {
-        if (err) {
-          console.log(err)
-          return
-        }
-
-        this.setState({
-          usersList: res.body.slice(0)
-        })
-      })
+    this.setState({
+      fetch: this._fetchGithubUsers()
+    })
   }
 
   render() {
@@ -59,6 +66,15 @@ class UsersListComponent extends React.Component {
               age={ user.age } />
       )
     })
+  }
+
+  _fetchGithubUsers() {
+    return fetchGithubUsers()
+      .then((res) => {
+        this.setState({
+          usersList: res.body.slice(0)
+        })
+      })
   }
 }
 
@@ -187,17 +203,14 @@ describe('Test suite for UsersListComponent', () => {
 
     UsersListComponent.prototype.componentDidMount = componentDidMount
 
-    new Promise((resolve) => {
-      setTimeout(() => {
-        resolve()
-      }, 1500)
-    }).then(() => {
-      expect(wrapper.state().usersList).to.be.instanceof(Array)
-      expect(wrapper.state().usersList.length).to.equal(1)
-      expect(wrapper.state().usersList[0].name).to.equal('Reign')
-      expect(wrapper.state().usersList[0].age).to.equal(26)
-      nock.cleanAll()
-      done()
-    })
+    wrapper.state().fetch
+      .then(() => {
+        expect(wrapper.state().usersList).to.be.instanceof(Array)
+        expect(wrapper.state().usersList.length).to.equal(1)
+        expect(wrapper.state().usersList[0].name).to.equal('Reign')
+        expect(wrapper.state().usersList[0].age).to.equal(26)
+        nock.cleanAll()
+        done()
+      })
   })
 })
