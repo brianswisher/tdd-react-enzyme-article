@@ -185,8 +185,6 @@ describe('Test suite for UsersListComponent', () => {
   })
 
   it('Correctly updates the state after AJAX call in `componentDidMount` was made', (done) => {
-    const componentDidMount = UsersListComponent.prototype.componentDidMount
-
     sinon.spy(UsersListComponent.prototype, 'componentDidMount')
 
     nock('https://api.github.com')
@@ -201,7 +199,7 @@ describe('Test suite for UsersListComponent', () => {
 
     expect(UsersListComponent.prototype.componentDidMount.calledOnce).to.equal(true)
 
-    UsersListComponent.prototype.componentDidMount = componentDidMount
+    UsersListComponent.prototype.componentDidMount.restore()
 
     wrapper.state().fetch
       .then(() => {
