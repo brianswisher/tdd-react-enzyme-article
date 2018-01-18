@@ -1,10 +1,11 @@
 require('babel-register')()
 
-const jsdom = require('jsdom').jsdom
+const { JSDOM } = require('jsdom')
 const exposedProperties = ['window', 'navigator', 'document']
+const window = (new JSDOM('')).window
+const { document } = window
 
-global.document = jsdom('')
-global.window = document.defaultView
+global.window = window
 
 Object.keys(document.defaultView).forEach((property) => {
   if (typeof global[property] === 'undefined') {
