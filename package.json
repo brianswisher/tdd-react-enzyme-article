@@ -9,6 +9,7 @@
     "url": "https://github.com/brianswisher/tdd-react-enzyme-article"
   },
   "scripts": {
+    "outdated": "npm-check -p",
     "test": "mocha setup.js tests.js"
   },
   "devDependencies": {
@@ -16,16 +17,18 @@
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
-    "enzyme": "^2.3.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "jsdom": "^11.5.1",
     "mocha": "^5.0.0",
     "nock": "^9.1.6",
+    "npm-check": "^5.5.2",
     "react-addons-test-utils": "^15.6.2",
     "sinon": "^4.1.6"
   },
   "dependencies": {
-    "react": "^15.0.2",
-    "react-dom": "^15.0.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "superagent": "^3.8.2"
   }
 }

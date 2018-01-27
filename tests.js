@@ -5,6 +5,8 @@ import request from 'superagent'
 import { expect } from 'chai'
 import { shallow, mount, render } from 'enzyme'
 
+process.on('unhandledRejection', up => { throw up })
+
 function fetchGithubUsers() {
   return new Promise((resolve, reject) => {
     request
@@ -134,8 +136,8 @@ describe('Test suite for UsersListComponent', () => {
     expect(wrapper.state().usersList.length).to.equal(1)
     expect(wrapper.find('.users-list')).to.have.length(1)
 
-    let child = wrapper.childAt(0)
-    let childProps = child.props()
+    const child = wrapper.find('.users-list').childAt(0)
+    const childProps = child.props()
 
     expect(child.type()).to.equal(UserComponent)
     expect(childProps.name).to.equal('Reign')
