@@ -1,47 +1,5 @@
 import { expect } from 'chai'
-
-const ValueModule = ({data = null, user = null, date = null}) => {
-  const C = { // C = cache
-    data,
-    date,
-    user
-  }
-  const values = []
-
-  return {
-    getData() {
-      return C.data
-    },
-
-    getDate() {
-      return C.date
-    },
-
-    getUser() {
-      return C.user
-    },
-
-    getUpdateTotal() {
-      return values.length
-    },
-
-    setData({data = null, user = null, date = null}) {
-      if (data !== C.data) {
-        values.push(data)
-
-        C.data = values[values.length - 1]
-      }
-
-      if (user !== C.user) {
-        C.user = user
-      }
-
-      if (date !== C.date) {
-        C.date = date
-      }
-    }
-  }
-}
+import ValueModule from './ValueModule'
 
 let value
 
@@ -86,23 +44,37 @@ describe('ValueModule', () => {
 
       expect(value.getUser()).to.equal('Luke')
     })
+
+    it('should return output of `toString`', () => {
+      const payload = {
+        data: 'Darkside',
+        date: '2018-01-30',
+        user: 'Anakin',
+      }
+      const result = 'data: Darkside, updated: 2018-01-30, by: Anakin'
+
+      value = new ValueModule(payload)
+
+
+      expect(`${value}`).to.equal(result)
+    })
   })
 
   describe('with `setData`', () => {
     it('should update to expected date', () => {
-      value.setData({date: '01/29/2014'})
+      value.setDate('2018-01-30')
 
-      expect(value.getDate()).to.equal('01/29/2014')
+      expect(value.getDate()).to.equal('2018-01-30')
     })
 
     it('should update to expected data', () => {
-      value.setData({data: 'Apples'})
+      value.setData('Plums')
 
-      expect(value.getData()).to.equal('Apples')
+      expect(value.getData()).to.equal('Plums')
     })
 
     it('should update to expected user', () => {
-      value.setData({user: 'Fred'})
+      value.setUser('Fred')
 
       expect(value.getUser()).to.equal('Fred')
     })
@@ -113,31 +85,33 @@ describe('ValueModule', () => {
       })
 
       it('should return one with only a single update', () => {
-        value.setData({data: 'Oranges'})
+        value.setData('Oranges')
 
         expect(value.getUpdateTotal()).to.equal(1)
       })
 
       it('should not update if the value is the same', () => {
-        value.setData({data: 'Oranges'})
+        value.setData('Oranges')
 
         expect(value.getUpdateTotal()).to.equal(1)
 
-        value.setData({data: 'Oranges'})
+        value.setData('Oranges')
 
         expect(value.getUpdateTotal()).to.equal(1)
       })
 
       it('should return an incremented number with multiple updates', () => {
-        value.setData({data: 'Oranges'})
+        expect(value.getUpdateTotal()).to.equal(0)
+
+        value.setData('Oranges')
 
         expect(value.getUpdateTotal()).to.equal(1)
 
-        value.setData({data: 'Apples'})
+        value.setData('Apples')
 
         expect(value.getUpdateTotal()).to.equal(2)
 
-        value.setData({data: 'Grapes'})
+        value.setData('Grapes')
 
         expect(value.getUpdateTotal()).to.equal(3)
       })
